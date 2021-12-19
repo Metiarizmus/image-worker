@@ -1,4 +1,4 @@
-package net.javaguides.springboot.repository;
+package net.javaguides.springboot.service.impl;
 
 import net.javaguides.springboot.model.User;
 import org.springframework.core.io.FileSystemResource;
@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 @Service
-public class FileSystemRepository {
+public class FileSystemService {
 
     public String save(MultipartFile file, String emailUser) throws IOException {
 

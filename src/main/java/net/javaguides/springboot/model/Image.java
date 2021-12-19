@@ -1,11 +1,10 @@
 package net.javaguides.springboot.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import net.javaguides.springboot.enums.BackgroundColor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -19,7 +18,7 @@ public class Image {
     private Long id;
 
     @Column(name = "image_name")
-    private String fileName;
+    private String imageName;
 
     @Column(name = "location")
     private String location;
@@ -33,7 +32,7 @@ public class Image {
     }
 
     public Image(String fileName, String location, User user) {
-        this.fileName = fileName;
+        this.imageName = fileName;
         this.location = location;
         this.user = user;
     }
@@ -45,21 +44,36 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return Objects.equals(id, image.id) && Objects.equals(fileName, image.fileName) && Objects.equals(location, image.location) && Objects.equals(user, image.user);
+        return Objects.equals(id, image.id) && Objects.equals(imageName, image.imageName) && Objects.equals(location, image.location) && Objects.equals(user, image.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fileName, location, user);
+        return Objects.hash(id, imageName, location, user);
     }
 
     @Override
     public String toString() {
         return "Image{" +
                 "id=" + id +
-                ", fileName='" + fileName + '\'' +
+                ", fileName='" + imageName + '\'' +
                 ", location='" + location + '\'' +
                 ", user=" + user +
                 '}';
     }
 }
+
+//    @Column(name = "height")
+//    private Double height;
+//
+//    @Column(name = "width")
+//    private Double width;
+//
+//    @Column(name = "mirrorX")
+//    private boolean mirrorX;
+//
+//    @Column(name = "mirrorY")
+//    private boolean mirrorY;
+//
+//    @Column(name = "color")
+//    private BackgroundColor color;
