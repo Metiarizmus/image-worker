@@ -6,39 +6,23 @@ import lombok.NoArgsConstructor;
 import net.javaguides.springboot.enums.BackgroundColor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ImageDto {
     private Long id;
     private String imageName;
     private String location;
     private byte[] image;
+    private Double height;
 
-    public ImageDto() {
+    private Double width;
 
-    }
+    private boolean mirrorX;
 
-    public ImageDto(Long id, String imageName, String location, byte[] image) {
-        this.id = id;
-        this.imageName = imageName;
-        this.location = location;
-        this.image = image;
-    }
+    private boolean mirrorY;
+
+    private BackgroundColor color;
 }
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class ImageDto {
-//    private Long id;
-//    private String imageName;
-//    private String location;
-//    private byte[] image;
-//    private Double height;
-//
-//    private Double width;
-//
-//    private boolean mirrorX;
-//
-//    private boolean mirrorY;
-//
-//    private BackgroundColor color;
+
 

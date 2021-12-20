@@ -23,9 +23,27 @@ public class Image {
     @Column(name = "location")
     private String location;
 
+
+    @Column(name = "height")
+    private Double height;
+
+    @Column(name = "width")
+    private Double width;
+
+    @Column(name = "mirrorX")
+    private boolean mirrorX;
+
+    @Column(name = "mirrorY")
+    private boolean mirrorY;
+
+    @Column(name = "color")
+    @Enumerated(EnumType.STRING)
+    private BackgroundColor color;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
 
     public Image() {
 
@@ -37,7 +55,15 @@ public class Image {
         this.user = user;
     }
 
+    public Image(Double height, Double width, boolean mirrorX, boolean mirrorY, BackgroundColor color) {
 
+        this.height = height;
+        this.width = width;
+        this.mirrorX = mirrorX;
+        this.mirrorY = mirrorY;
+        this.color = color;
+
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -63,17 +89,3 @@ public class Image {
     }
 }
 
-//    @Column(name = "height")
-//    private Double height;
-//
-//    @Column(name = "width")
-//    private Double width;
-//
-//    @Column(name = "mirrorX")
-//    private boolean mirrorX;
-//
-//    @Column(name = "mirrorY")
-//    private boolean mirrorY;
-//
-//    @Column(name = "color")
-//    private BackgroundColor color;

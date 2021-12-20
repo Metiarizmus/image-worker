@@ -34,11 +34,16 @@ public class ImageService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Long save(MultipartFile file, User user) throws IOException {
+    public Long save(MultipartFile file, User user, Image image) throws IOException {
 
         String location = fileSystemService.save(file, user.getEmail());
 
-        return imageDbRepository.save(new Image(file.getOriginalFilename(), location, user)).getId();
+        System.err.println("here service");
+        image.setUser(user);
+        image.setLocation(location);
+        image.setImageName(file.getOriginalFilename());
+
+        return imageDbRepository.save(image).getId();
     }
 
     public List<ImageDto> getAllImageForUser(String userEmail) {

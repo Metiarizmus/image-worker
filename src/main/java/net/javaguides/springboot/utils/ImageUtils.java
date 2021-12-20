@@ -29,26 +29,4 @@ public class ImageUtils {
 
     }
 
-//    public static void main(String[] args) throws IOException {
-//
-//        BufferedImage bi = ImageIO.read(new File("G:/user@mail.ru/1639599857954-pulpitrock.jpg"));
-//
-//        // convert BufferedImage to byte[]
-//        byte[] bytes = toByteArray(bi, "png");
-//
-//        //encode the byte array for display purpose only, optional
-//        String bytesBase64 = Base64.encodeBase64String(bytes);
-//
-//        System.out.println(bytesBase64);
-//
-//        // decode byte[] from the encoded string
-//        byte[] bytesFromDecode = Base64.decodeBase64(bytesBase64);
-//
-//        // convert the byte[] back to BufferedImage
-//        BufferedImage newBi = toBufferedImage(bytesFromDecode);
-//
-//        // save it somewhere
-//        ImageIO.write(newBi, "png", new File("G:/user@mail.ru/1639599857954-pulpitrock.jpg"));
-//
-//    }
 }

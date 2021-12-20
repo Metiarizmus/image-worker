@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>PixelTrice</title>
+  <title>Gallery</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
 </head>
 <body>
@@ -20,25 +19,16 @@
   <tr>
     <th>Image name</th>
     <th>Image</th>
-<!--    <th>Description</th>-->
-<!--    <th>Price</th>-->
-<!--    <th>Created date</th>-->
-<!--    <th>Action</th>-->
+    <th>More detailed</th>
   </tr>
   </thead>
   <tbody th:with="count=0">
 
   <tr th:each = "imageGallery, hh : ${images}">
-<!-- <td th:with="count=${count + 1}" th:text="${count}"></td>-->
     <!--/*@thymesVar id="imageGallery" type="net.javaguides.springboot.dto.ImageDto"*/-->
     <td th:text="${imageGallery.imageName}"></td>
-    <td><img th:src="@{${'/image/display/'+ imageGallery.id}}"  class="card img-fluid" style="width:300px" alt=""/></td>
-
-
-
-<!--    <td th:text="${imageGallery.price}"></td>-->
-<!--    <td th:text="${#dates.format({imageGallery.createDate}, 'dd-MM-yyyy')}"/></td>-->
-<!--    <td><a th:href="@{/image/imageDetails(id=${imageGallery.id})}" class="btn btn-info text-right" target="_blank">View</a></td>-->
+    <td><img th:src="@{${'/image/display/'+ imageGallery.id}}"  class="card img-fluid" style="width:300px; height: 300px" alt=""/></td>
+    <td><a th:href="@{/image/imageDetails(id=${imageGallery.id})}" class="btn btn-info text-right" target="_blank">View</a></td>
   </tr>
 
   </tbody>
@@ -50,10 +40,6 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('#example').DataTable();
-  } );
-</script>
+
 </body>
 </html>

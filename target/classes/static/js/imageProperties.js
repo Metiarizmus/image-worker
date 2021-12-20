@@ -1,38 +1,54 @@
+
+$(function () {
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+});
+
 $(document).ready(function() {
     $('#loader').hide();
     $("#submit").on("click", function() {
         $("#submit").prop("disabled", true);
-        var name = $("#name").val();
-        var file = $("#image").val();
-        var price = $("#price").val();
-        var description = $("#description").val();
-        var form = $("#form").serialize();
-        var data = new FormData($("#form")[0]);
-        data.append('name', name);
-        data.append('price', price);
-        data.append('description', description);
-        //alert(data);
+        let height = $("#height").val();
+        let file = $("#image").val();
+        let width = $("#width").val();
+        let mirrorX = $("#mirrorX").val();
+        let mirrorY = $("#mirrorY").val();
+        let color = $("#color").val();
+        let form = $("#form").serialize();
+
+        let data = new FormData($("#form")[0]);
+        data.append('height', height);
+        data.append('width', width);
+        data.append('mirrorX', mirrorX);
+        data.append('mirrorY', mirrorY);
+        data.append('color', color);
+        data.append("image",file );
         $('#loader').show();
-        if (name === "" || file === "" || price === "" || description === "") {
+        if (height === "" || file === "" || width === "") {
             $("#submit").prop("disabled", false);
             $('#loader').hide();
-            $("#name").css("border-color", "red");
+            $("#width").css("border-color", "red");
+            $("#height").css("border-color", "red");
             $("#image").css("border-color", "red");
-            $("#price").css("border-color", "red");
-            $("#description").css("border-color", "red");
-            $("#error_name").html("Please fill the required field.");
+            $("#error_width").html("Please fill the required field.");
             $("#error_file").html("Please fill the required field.");
-            $("#error_price").html("Please fill the required field.");
-            $("#error_description").html("Please fill the required field.");
+            $("#error_height").html("Please fill the required field.");
         } else {
-            $("#name").css("border-color", "");
+            $("#height").css("border-color", "");
             $("#image").css("border-color", "");
-            $("#price").css("border-color", "");
-            $("#description").css("border-color", "");
-            $('#error_name').css('opacity', 0);
+            $("#width").css("border-color", "");
+           // $("#description").css("border-color", "");
+            $('#error_height').css('opacity', 0);
             $('#error_file').css('opacity', 0);
-            $('#error_price').css('opacity', 0);
-            $('#error_description').css('opacity', 0);
+            $('#error_width').css('opacity', 0);
+           // $('#error_description').css('opacity', 0);
+
+
+            console.log(data)
+
             $.ajax({
                 type: 'POST',
                 enctype: 'multipart/form-data',
@@ -48,7 +64,7 @@ $(document).ready(function() {
                         $("#form")[0].reset();
                         $('#success').css('display','block');
                         $("#error").text("");
-                        $("#success").html("Product Inserted Succsessfully.");
+                        $("#success").html("Image Inserted Succsessfully.");
                         $('#success').delay(2000).fadeOut('slow');
                     }
                 },
@@ -57,7 +73,7 @@ $(document).ready(function() {
                     $('#error').css('display','block');
                     $("#error").html("Oops! something went wrong.");
                     $('#error').delay(5000).fadeOut('slow');
-                    location.reload();
+                   // location.reload();
                 }
             });
         }
