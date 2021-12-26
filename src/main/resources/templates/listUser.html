@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+
+<br>
+<h1 class="text-center">Gallery
+    <a href="/" class="btn btn-danger text-right">Go Home</a>
+</h1>
+<br><br>
+
+<table id="requests" class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Ban user</th>
+        <th>Gallery user</th>
+    </tr>
+    </thead>
+
+    <tbody th:with="count=0">
+
+    <tr th:each="user, hh : ${users}" class="rows">
+<!--        /*@thymesVar id="getFirstName" type="net.javaguides.springboot.dto.UserDto"*/-->
+        <td th:text="${user.getFirstName()}"></td>
+        <td th:text="${user.getLastName()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+
+        <td th:if="${user.getActive() == 1}"><!--/*@thymesVar id="id" type="net.javaguides.springboot.dto.UserDto"*/-->
+            <a th:href="@{${'/admin/banUser/'+ user.id}}" class="btn btn-success text-right">true</a></td>
+
+        <td th:if="${user.getActive() == 0}">
+            <a th:href="@{${'/admin/unbanUser/'+ user.id}}" class="btn btn-danger text-right">false</a></td>
+
+
+        <td><a th:href="@{/admin/image/show(emailUser=${user.email})}" class="btn btn-info text-right" target="_blank">View</a></td>
+    </tr>
+    </tbody>
+
+</table>
+
+
+<script>
+    $(function () {
+        $("#requests").dataTable();
+    })
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+</body>
+</html>

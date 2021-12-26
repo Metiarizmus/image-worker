@@ -1,37 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-  <title>PixelTrice</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
+    <title>Gallery</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+
+<svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg">
+    <filter id="greenish">
+        <feComponentTransfer>
+            <feFuncR type="linear" slope="2" intercept="-0.5"/>
+            <feFuncG type="linear" slope="2" intercept="0"/>
+            <feFuncB type="linear" slope="2" intercept="-0.25"/>
+        </feComponentTransfer>
+    </filter>
+    <filter id="bluish">
+        <feComponentTransfer>
+            <feFuncR type="linear" slope="2" intercept="-0.5"/>
+            <feFuncG type="linear" slope="2" intercept="-0.1"/>
+            <feFuncB type="linear" slope="2" intercept="0"/>
+        </feComponentTransfer>
+    </filter>
+    <filter id="redish">
+        <feComponentTransfer>
+            <feFuncR type="linear" slope="2" intercept="1"/>
+            <feFuncG type="linear" slope="2" intercept="0"/>
+            <feFuncB type="linear" slope="2" intercept="0"/>
+        </feComponentTransfer>
+    </filter>
+    <filter id="yellowish">
+        <feComponentTransfer>
+            <feFuncR type="linear" slope="2" intercept="0"/>
+            <feFuncG type="linear" slope="2" intercept="0"/>
+            <feFuncB type="linear" slope="2" intercept="-1"/>
+        </feComponentTransfer>
+    </filter>
+</svg>
+
+
 <br>
 <h1 class="text-center">Gallery
-  <a href="/" class="btn btn-danger text-right">Go Home</a>
+    <a href="/" class="btn btn-danger text-right">Go Home</a>
 </h1>
 <br><br>
 
 <table id="example" class="table table-striped table-bordered text-center">
-  <thead>
-  <tr>
-    <th>Image name</th>
-    <th>Image</th>
-    <th>More detailed</th>
-  </tr>
-  </thead>
-  <tbody th:with="count=0">
+    <thead>
+    <tr>
+        <th style="display: none">Id</th>
+        <th>Image name</th>
+        <th>Image</th>
+        <th>More detailed</th>
+    </tr>
+    </thead>
+    <tbody th:with="count=0">
 
-  <tr th:each = "imageGallery, hh : ${images}">
-    <!--/*@thymesVar id="imageGallery" type="net.javaguides.springboot.dto.ImageDto"*/-->
-    <td th:text="${imageGallery.imageName}"></td>
-    <td><img th:src="@{${'/image/display/'+ imageGallery.id}}"  class="card img-fluid" style="width:300px; height: 300px" alt=""/></td>
-    <td><a th:href="@{/image/imageDetails(id=${imageGallery.id})}" class="btn btn-info text-right" target="_blank">View</a></td>
-  </tr>
+    <tr th:each="imageGallery, hh : ${images}" class="rows">
+<!--        /*@thymesVar id="imageGallery" type="net.javaguides.springboot.dto.ImageDto"*/-->
+        <td th:text="${imageGallery.getId()}" class="id" style="display: none"></td>
 
-  </tbody>
+        <td th:text="${imageGallery.imageName}"></td>
+
+        <td><img th:src="@{/image/display(imageId = ${imageGallery.id}, userEmail = ${email})}" class="picture" alt=""/></td>
+
+        <td><a th:href="@{/image/imageDetails(imageId = ${imageGallery.id}, userEmail = ${email})}" class="btn btn-info text-right" target="_blank">View</a></td>
+
+        </td>
+    </tr>
+    </tbody>
 
 </table>
 
@@ -39,7 +81,67 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<script th:src="@{../static/js/propertiesGallery.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    let d = [[${images}]];
+    const rows = document.querySelectorAll("tr");
+
+    for (let i = 0; i < d.length; i++) {
+        if (d[i].mirrorX === true) {
+            const id = d[i].id;
+            rows.forEach(item => {
+                if (+item.firstElementChild.innerHTML === +id) {
+                    item.querySelector('.picture').style.transform = "scale(-1,1)";
+                }
+            })
+        }
+
+        if (d[i].mirrorY === true) {
+            const id = d[i].id;
+            rows.forEach(item => {
+                if (+item.firstElementChild.innerHTML === +id) {
+                    item.querySelector('.picture').style.transform = "scale(1,-1)";
+                }
+            })
+        }
+
+        const height = d[i].height;
+        const width = d[i].width;
+        const id = d[i].id;
+        const color = d[i].color;
+        console.log(color)
+        rows.forEach(item => {
+            if (+item.firstElementChild.innerHTML === +id) {
+                    item.querySelector('.picture').style.height = height + "px";
+                item.querySelector('.picture').style.width = width + "px";
+
+                switch (color) {
+                    case 'YELLOW':item.querySelector('.picture').style.filter = "url(#yellowish)";
+                                break;
+                    case 'RED':item.querySelector('.picture').style.filter = "url(#redish)";
+                        break;
+                    case 'GREEN':item.querySelector('.picture').style.filter = "url(#greenish)";
+                        break;
+                    case 'BLUE':item.querySelector('.picture').style.filter = "url(#bluish)";
+                        break;
+                }
+            }
+        })
 
 
+        console.log(width)
+
+
+    }
+    console.log(d)
+
+
+</script>
 </body>
 </html>

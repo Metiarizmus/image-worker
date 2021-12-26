@@ -3,8 +3,11 @@ package net.javaguides.springboot.service.interfaces;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import net.javaguides.springboot.model.User;
-import net.javaguides.springboot.dto.UserRegistrationDto;
+import net.javaguides.springboot.dto.UserDto;
 
-public interface UserService extends UserDetailsService{
-	User save(UserRegistrationDto registrationDto);
+import java.util.List;
+
+public interface UserRegistrService extends UserDetailsService{
+	User save(UserDto registrationDto);
+
 }

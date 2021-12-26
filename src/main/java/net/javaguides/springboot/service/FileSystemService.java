@@ -1,4 +1,4 @@
-package net.javaguides.springboot.service.impl;
+package net.javaguides.springboot.service;
 
 import net.javaguides.springboot.model.User;
 import org.springframework.core.io.FileSystemResource;

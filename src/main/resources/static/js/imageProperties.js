@@ -58,7 +58,6 @@ $(document).ready(function() {
                 contentType: false,
                 cache: false,
                 success: function(data, statusText, xhr) {
-                    console.log(xhr.status);
                     if(xhr.status == "200") {
                         $('#loader').hide();
                         $("#form")[0].reset();
@@ -66,6 +65,8 @@ $(document).ready(function() {
                         $("#error").text("");
                         $("#success").html("Image Inserted Succsessfully.");
                         $('#success').delay(2000).fadeOut('slow');
+
+
                     }
                 },
                 error: function(e) {

@@ -1,8 +1,9 @@
 package net.javaguides.springboot.controller;
 
 
-import net.javaguides.springboot.dto.UserRegistrationDto;
-import net.javaguides.springboot.service.interfaces.UserService;
+import net.javaguides.springboot.dto.UserDto;
+import net.javaguides.springboot.service.interfaces.UserRegistrService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,16 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/registration")
 public class UserRegistrationController {
 
-	private UserService userService;
+	private Logger log = Logger.getLogger(UserRegistrationController.class);
 
-	public UserRegistrationController(UserService userService) {
+	private UserRegistrService userService;
+
+	public UserRegistrationController(UserRegistrService userService) {
 		super();
 		this.userService = userService;
 	}
 
 	@ModelAttribute("user")
-	public UserRegistrationDto userRegistrationDto() {
-		return new UserRegistrationDto();
+	public UserDto userRegistrationDto() {
+		return new UserDto();
 	}
 
 	@GetMapping
@@ -31,7 +34,8 @@ public class UserRegistrationController {
 	}
 
 	@PostMapping
-	public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
+	public String registerUserAccount(@ModelAttribute("user") UserDto registrationDto) {
+		log.info("save user in db");
 		userService.save(registrationDto);
 		return "redirect:/registration?success";
 	}

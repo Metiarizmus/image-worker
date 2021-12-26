@@ -6,7 +6,8 @@ import net.javaguides.springboot.enums.BackgroundColor;
 import net.javaguides.springboot.model.Image;
 import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.repository.UserRepository;
-import net.javaguides.springboot.service.impl.ImageService;
+import net.javaguides.springboot.service.interfaces.ImageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,24 +18,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Controller
 public class ImageController {
+
+    private final static Logger loger = Logger.getLogger(ImageController.class);
 
     @Autowired
     private ImageService imageService;
 
     @Autowired
     private UserRepository userRepository;
+
 
     private static String getCurrentlyEmail() {
         String userEmail = null;
@@ -82,23 +82,35 @@ public class ImageController {
     String show(Model map) {
         List<ImageDto> images = imageService.getAllImageForUser(getCurrentlyEmail());
         map.addAttribute("images", images);
+        map.addAttribute("email", getCurrentlyEmail());
         return "gallery";
     }
 
-    @GetMapping("/image/display/{id}")
-    void showImage(@PathVariable("id") Long id, HttpServletResponse response) throws ServletException, IOException {
-        Optional<ImageDto> imageGallery = imageService.getImageById(id, getCurrentlyEmail());
+    @GetMapping("/image/display")
+    void showImage(@RequestParam("imageId") Long imageId,
+                   @RequestParam("userEmail") String userEmail,
+                   HttpServletResponse response) throws  IOException {
+
+        loger.info("image id in display request :: " + imageId);
+        loger.info("user email id in display request :: " + userEmail);
+
+        Optional<ImageDto> imageGallery = imageService.getImageById(imageId, userEmail);
         response.setContentType("image/jpg");
         response.getOutputStream().write(imageGallery.get().getImage());
         response.getOutputStream().close();
     }
 
     @GetMapping("/image/imageDetails")
-    String showProductDetails(@RequestParam("id") Long id, Optional<ImageDto> imageGallery, Model model) {
+    String showImageDetails(@RequestParam("imageId") Long imageId,
+                            @RequestParam("userEmail") String userEmail,
+                            Optional<ImageDto> imageGallery, Model model) {
         try {
-            //log.info("Id :: " + id);
-            if (id != 0) {
-                imageGallery = imageService.getImageById(id, getCurrentlyEmail());
+
+            loger.info("image id in imageDetails request :: " + imageId);
+            loger.info("user email id in imageDetails request :: " + userEmail);
+
+            if (imageId != 0) {
+                imageGallery = imageService.getImageById(imageId, userEmail);
 
                 //log.info("products :: " + imageGallery);
                 if (imageGallery.isPresent()) {
@@ -109,7 +121,8 @@ public class ImageController {
                     model.addAttribute("mirrorX", imageGallery.get().isMirrorX());
                     model.addAttribute("mirrorY", imageGallery.get().isMirrorY());
                     model.addAttribute("color", imageGallery.get().getColor());
-                    return "imageDeteils";
+                    model.addAttribute("email", userEmail);
+                    return "imageDetails";
                 }
                 return "redirect:/";
             }

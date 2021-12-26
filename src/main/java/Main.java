@@ -1,13 +1,10 @@
-import net.javaguides.springboot.service.impl.ImageService;
+import net.javaguides.springboot.service.impl.ImageServiceImpl;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        ImageService imageService = new ImageService();
+        ImageServiceImpl imageService = new ImageServiceImpl();
         System.out.println(imageService.getAllImageForUser("user@mail.ru"));
     }
 }

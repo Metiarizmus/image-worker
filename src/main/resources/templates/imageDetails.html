@@ -23,8 +23,10 @@
                 <div class="grid images_3_of_2">
                     <div class="flexslider">
                         <div class="thumb-image">
-                            <img th:src="@{${'/image/display/'+id}}"
-                                 class="img img-responsive img-fluid" alt="">
+
+                            <!--/*@thymesVar id="id" type="net.javaguides.springboot.dto.ImageDto"*/-->
+                            <img th:src="@{/image/display(imageId = ${id}, userEmail = ${email})}" class="img img-responsive img-fluid" alt="">
+
                         </div>
                         <div class="clearfix"></div>
                     </div>

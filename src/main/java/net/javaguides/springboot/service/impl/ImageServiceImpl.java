@@ -4,23 +4,19 @@ import net.javaguides.springboot.dto.ImageDto;
 import net.javaguides.springboot.model.Image;
 import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.repository.ImageRepository;
-import net.javaguides.springboot.utils.ImageUtils;
-import org.modelmapper.ModelMapper;
+import net.javaguides.springboot.service.FileSystemService;
+import net.javaguides.springboot.service.interfaces.ImageService;
+import net.javaguides.springboot.utils.DtoConvert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ImageService {
+public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private FileSystemService fileSystemService;
@@ -29,16 +25,11 @@ public class ImageService {
     private ImageRepository imageDbRepository;
 
     @Autowired
-    private ImageUtils imageUtils;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private DtoConvert dtoConvert;
 
     public Long save(MultipartFile file, User user, Image image) throws IOException {
 
         String location = fileSystemService.save(file, user.getEmail());
-
-        System.err.println("here service");
         image.setUser(user);
         image.setLocation(location);
         image.setImageName(file.getOriginalFilename());
@@ -52,7 +43,7 @@ public class ImageService {
         List<ImageDto> imageDtos = new ArrayList<>();
 
         for (Image q : images) {
-            imageDtos.add(convertToDto(q));
+            imageDtos.add(dtoConvert.convertToDto(q));
         }
 
         return imageDtos;
@@ -63,25 +54,10 @@ public class ImageService {
 
         Image image = imageDbRepository.getByIdAndUser_Email(id, userEmail);
 
-        return Optional.of(convertToDto(image));
+        return Optional.of(dtoConvert.convertToDto(image));
 
     }
 
-    private ImageDto convertToDto(Image image) {
 
-        BufferedImage bufferedImage = null;
-        byte[] bytesImage = null;
-        try {
-            bufferedImage = ImageIO.read(new File(image.getLocation()));
-            bytesImage = imageUtils.toByteArray(bufferedImage, "jpg");
-        } catch (IOException e) {
-
-        }
-
-        ImageDto imageDto = modelMapper.map(image, ImageDto.class);
-        imageDto.setImage(bytesImage);
-
-        return imageDto;
-    }
 
 }

@@ -11,8 +11,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
@@ -30,6 +29,9 @@ public class User {
 
     private String password;
 
+    @Column(name = "active", columnDefinition = "1")
+    private int active; // 1 - active, 2 - block
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
@@ -39,9 +41,6 @@ public class User {
                     name = "role_id", referencedColumnName = "id"))
 
     private Collection<Role> roles;
-
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-//    private Set<Image> images;
 
     public User() {
 
@@ -57,33 +56,9 @@ public class User {
     }
 
 
-    public User(String emailUser) {
-    }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password, roles);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
 }
+
+
+
+
+
