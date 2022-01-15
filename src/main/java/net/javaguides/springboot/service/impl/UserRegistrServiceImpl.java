@@ -3,6 +3,7 @@ package net.javaguides.springboot.service.impl;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import net.javaguides.springboot.enums.RolesName;
 import net.javaguides.springboot.exceptions.LockedException;
 import net.javaguides.springboot.exceptions.UsernameNotFoundException;
 import net.javaguides.springboot.service.interfaces.UserRegistrService;
@@ -45,7 +46,7 @@ public class UserRegistrServiceImpl implements UserRegistrService {
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
     }
 
 
@@ -53,7 +54,7 @@ public class UserRegistrServiceImpl implements UserRegistrService {
     public User save(UserDto registrationDto) {
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
-                passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+                passwordEncoder.encode(registrationDto.getPassword()), Collections.singleton((new Role((RolesName.ROLE_USER)))));
 
         return userRepository.save(user);
     }

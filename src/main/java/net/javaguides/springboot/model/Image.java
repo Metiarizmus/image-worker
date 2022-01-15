@@ -23,7 +23,6 @@ public class Image {
     @Column(name = "location")
     private String location;
 
-
     @Column(name = "height")
     private Double height;
 

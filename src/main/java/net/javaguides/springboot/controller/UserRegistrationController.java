@@ -3,7 +3,9 @@ package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.service.interfaces.UserRegistrService;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/registration")
 public class UserRegistrationController {
 
-	private Logger log = Logger.getLogger(UserRegistrationController.class);
+	private static final Logger log =  LoggerFactory.getLogger(UserRegistrationController.class);
 
 	private UserRegistrService userService;
 

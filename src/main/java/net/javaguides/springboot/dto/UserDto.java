@@ -9,7 +9,7 @@ public class UserDto {
 	private String lastName;
 	private String email;
 	private String password;
-	private int active;
+	private int active = 1;
 
 	public UserDto(){
 		

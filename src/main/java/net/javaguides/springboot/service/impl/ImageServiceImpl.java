@@ -4,22 +4,22 @@ import net.javaguides.springboot.dto.ImageDto;
 import net.javaguides.springboot.model.Image;
 import net.javaguides.springboot.model.User;
 import net.javaguides.springboot.repository.ImageRepository;
-import net.javaguides.springboot.service.FileSystemService;
 import net.javaguides.springboot.service.interfaces.ImageService;
 import net.javaguides.springboot.utils.DtoConvert;
+import net.javaguides.springboot.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
-    private FileSystemService fileSystemService;
+    private ImageUtils fileSystemService;
 
     @Autowired
     private ImageRepository imageDbRepository;
@@ -43,21 +43,27 @@ public class ImageServiceImpl implements ImageService {
         List<ImageDto> imageDtos = new ArrayList<>();
 
         for (Image q : images) {
-            imageDtos.add(dtoConvert.convertToDto(q));
+            try {
+                imageDtos.add(dtoConvert.convertToDto(q));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         return imageDtos;
     }
 
-
-    public Optional<ImageDto> getImageById(Long id, String userEmail) {
+    public ImageDto getImageById(Long id, String userEmail) {
 
         Image image = imageDbRepository.getByIdAndUser_Email(id, userEmail);
 
-        return Optional.of(dtoConvert.convertToDto(image));
-
+        try {
+            return dtoConvert.convertToDto(image);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-
 
 
 }

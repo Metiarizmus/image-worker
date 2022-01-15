@@ -4,7 +4,8 @@ import net.javaguides.springboot.dto.ImageDto;
 import net.javaguides.springboot.dto.UserDto;
 import net.javaguides.springboot.service.interfaces.AdminService;
 import net.javaguides.springboot.service.interfaces.ImageService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,8 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-    private static final Logger log = Logger.getLogger(AdminController.class);
+    private static final Logger log = LoggerFactory.getLogger(ImageController.class);
+
     @Autowired
     private AdminService adminService;
 
@@ -25,7 +27,7 @@ public class AdminController {
 
     @GetMapping("/admin/listUsers")
     String getListUser(Model model) {
-        List<UserDto> users = adminService.findAll();
+        List<UserDto> users = adminService.findAllUsers();
         model.addAttribute("users", users);
         return "listUser";
     }

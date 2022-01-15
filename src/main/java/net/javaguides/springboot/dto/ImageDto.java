@@ -14,14 +14,13 @@ public class ImageDto {
     private String location;
     private byte[] image;
     private Double height;
-
     private Double width;
-
     private boolean mirrorX;
-
     private boolean mirrorY;
-
     private BackgroundColor color;
+    private String encodeBase64;
+
+
 }
 
 

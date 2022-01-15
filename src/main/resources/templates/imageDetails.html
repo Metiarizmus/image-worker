@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Deteils</title>
+    <title>Details</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -10,22 +10,26 @@
 </head>
 <body>
 <br>
+
 <div class="banner-bootom-w3-agileits py-5">
+
     <div class="container py-xl-4 py-lg-2">
         <!-- tittle heading -->
         <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
             <span>I</span>mage
-            <span>D</span>etails</h3><br>
+            <span>D</span>details</h3><br>
         <!-- //tittle heading -->
 
         <div class="row">
+
             <div class="col-lg-5 col-md-8 single-right-left ">
                 <div class="grid images_3_of_2">
                     <div class="flexslider">
                         <div class="thumb-image">
 
-                            <!--/*@thymesVar id="id" type="net.javaguides.springboot.dto.ImageDto"*/-->
-                            <img th:src="@{/image/display(imageId = ${id}, userEmail = ${email})}" class="img img-responsive img-fluid" alt="">
+                            <!-- <img th:src="@{/image/display(imageId = ${imageDetails.get('id')}, userEmail = ${imageDetails.get('email')})}" class="img img-responsive img-fluid" alt="">-->
+
+                           <img  th:src="@{'data:image/jpeg;base64,'+${imageDetails.encodeBase64}}" class="picture"/>
 
                         </div>
                         <div class="clearfix"></div>
@@ -33,16 +37,16 @@
                 </div>
             </div>
 
-            <div class="col-lg-7 single-right-left simpleCart_shelfItem">
-
-                <p>Name: <span th:text="${name}" class="mb-3"></span></p>
-                <p>height: <span class="item_price" th:text="${height}"></span></p>
-                <p>width: <span class="item_price" th:text="${width}"></span></p>
-                <p>mirrorX: <span class="item_price" th:text="${mirrorX}"></span></p>
-                <p>mirrorY: <span class="item_price" th:text="${mirrorY}"></span></p>
+            <!--/*@thymesVar id="get" type="net.javaguides.springboot.dto.ImageDto"*/-->
+            <div class="col-lg-3 simpleCart_shelfItem" style="float: right">
+                <p>Name:<span th:text="${imageDetails.imageName}" class="mb-3"></span></p>
+                <p>height:<span class="item_price" th:text="${imageDetails.height}"></span></p>
+                <p>width: <span class="item_price" th:text="${imageDetails.width}"></span></p>
+                <p>mirrorX: <span class="item_price" th:text="${imageDetails.mirrorX}"></span></p>
+                <p>mirrorY: <span class="item_price" th:text="${imageDetails.mirrorY}"></span></p>
 
                 <div class="product-single-w3l">
-                    color: <span th:text="${color}" class="my-sm-4 my-3">
+                    color: <span th:text="${imageDetails.color}" class="my-sm-4 my-3">
 						</span>
                 </div>
 
@@ -56,5 +60,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>
